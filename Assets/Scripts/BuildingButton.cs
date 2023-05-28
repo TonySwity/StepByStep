@@ -1,26 +1,30 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class BuildingButton : MonoBehaviour
 {
     public BuildingPlacer BuildingPlacer;
-    public GameObject BuildingPrefab;
+    public Building BuildingPrefab;
+    [SerializeField] private TextMeshProUGUI _priceInfo;
+    
+    private Resources _playerResources;
+
+    private void Start()
+    {
+        _priceInfo.text = BuildingPrefab.Price.ToString("00");
+        _playerResources = FindAnyObjectByType<Resources>();
+    }
 
     public void TryBuy()
     {
-        int price = BuildingPrefab.GetComponent<Building>().Price;
+        int price = BuildingPrefab.Price;
 
-        Resources playerResources = FindObjectOfType<Resources>();
-        
-        if (playerResources.Money >= price)
+        if (_playerResources.TryBuy(price))
         {
-            playerResources.Money -= price;
             BuildingPlacer.CreateBuilding(BuildingPrefab);
-        }
-        else
-        {
-            Debug.Log("No money, no honey");
         }
     }
 }

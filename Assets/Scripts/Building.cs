@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Building : SelectableObject
@@ -8,13 +9,21 @@ public class Building : SelectableObject
     public int Price;
     public int XSize = 3;
     public int ZSize = 3;
-
+    
+    [SerializeField] private GameObject _menuObject;
+    
     private Color _startColor;
     public Renderer Renderer;
 
     private void Awake()
     {
         _startColor = Renderer.material.color;
+    }
+
+    public override void Start()
+    {
+        base.Start();
+        _menuObject.SetActive(false);
     }
 
     private void OnDrawGizmos()
@@ -39,4 +48,17 @@ public class Building : SelectableObject
     {
         Renderer.material.color = _startColor;
     }
+    
+    public override void Select()
+    {
+        base.Select();
+        _menuObject.SetActive(true);
+    }
+
+    public override void Unselect()
+    {
+        base.Unselect();
+        _menuObject.SetActive(false);
+    }
+
 }

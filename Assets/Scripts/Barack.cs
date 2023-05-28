@@ -4,17 +4,12 @@ using UnityEngine;
 
 public class Barack : Building
 {
-    [SerializeField] private GameObject _knightPanel;
-    
-    public override void Select()
-    {
-        base.Select();
-        _knightPanel.SetActive(true);
-    }
+    [SerializeField] private Transform _spawnPoint;
 
-    public override void Unselect()
+    public void CreateUnit(GameObject unitPrefab)
     {
-        base.Unselect();
-        _knightPanel.SetActive(false);
+        GameObject newUnit = Instantiate(unitPrefab, _spawnPoint.position, Quaternion.identity);
+        Vector3 newPosition = _spawnPoint.position + new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
+        newUnit.GetComponent<Unit>().WhenClickOnGround(newPosition);
     }
 }

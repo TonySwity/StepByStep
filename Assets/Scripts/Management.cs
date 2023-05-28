@@ -58,6 +58,28 @@ public class Management : MonoBehaviour
             {
                 UnhoveredCurrent();
             }
+            
+            if (CurrentState == SelectionState.UnitsSelected)
+            {
+                if (Input.GetMouseButtonUp(0))
+                {
+                    if (hit.collider.tag == "Ground")
+                    {
+                        int rowNumber = Mathf.CeilToInt( Mathf.Sqrt(ListOfSelected.Count));
+                        
+                        for (int i = 0; i < ListOfSelected.Count; i++)
+                        {
+                            int row = i / rowNumber;
+                            int column = i % rowNumber;
+                            
+                            Vector3 point = hit.point + new Vector3(row, 0f, column);
+                            
+                            ListOfSelected[i].WhenClickOnGround(point);
+                            
+                        }
+                    }
+                }
+            }
         }
         else
         {
@@ -77,20 +99,6 @@ public class Management : MonoBehaviour
             }
         }
         
-        if (CurrentState == SelectionState.UnitsSelected)
-        {
-            if (Input.GetMouseButtonUp(0))
-            {
-                if (hit.collider.tag == "Ground")
-                {
-                    for (int i = 0; i < ListOfSelected.Count; i++)
-                    {
-                        ListOfSelected[i].WhenClickOnGround(hit.point);
-                    }
-                }
-            }
-        }
-
         if (Input.GetMouseButtonDown(1))
         {
             UnselectAll();
@@ -104,8 +112,6 @@ public class Management : MonoBehaviour
 
         if (Input.GetMouseButton(0))
         {
-
-
             _frameEnd = Input.mousePosition;
 
             Vector2 min = Vector2.Min(_frameStart, _frameEnd);
@@ -158,6 +164,14 @@ public class Management : MonoBehaviour
         {
             ListOfSelected.Add(selectableObject);
             selectableObject.Select();
+        }
+    }
+
+    public void Unselect(SelectableObject selectableObject)
+    {
+        if (ListOfSelected.Contains(selectableObject))
+        {
+            ListOfSelected.Remove(selectableObject);
         }
     }
 

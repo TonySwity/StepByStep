@@ -80,9 +80,8 @@ public class BuildingPlacer : MonoBehaviour
         return true;
     }
 
-    public void CreateBuilding(GameObject buildingPrefab)
+    public void CreateBuilding(Building buildingPrefab)
     {
-        GameObject newBuilding = Instantiate(buildingPrefab);
-        CurrentBuilding = newBuilding.GetComponent<Building>();
+        CurrentBuilding = Instantiate(buildingPrefab);
     }
 }
